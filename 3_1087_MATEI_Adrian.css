@@ -1,3 +1,29 @@
 #titlu {
-  font-size: 200px;
+  font-size: 50px;
+  text-align: center;
+}
+
+#content {
+  display: grid;
+  justify-content: center;
+}
+
+.select-custom {
+  width: 50%;
+  display: flex;
+  text-align: center;
+  justify-self: center;
+  padding: 10px;
+}
+
+#select-tara {
+  visibility: hidden;
+}
+
+#lineChart {
+  visibility: hidden;
+}
+
+.bar:hover {
+  fill: gray;
 }
