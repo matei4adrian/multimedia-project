@@ -461,7 +461,7 @@ class LineChart {
     textVerical.setAttribute("x", 30);
     textVerical.setAttribute("y", 60);
 
-    // punere valori
+    // punere valori pe axa oy
     for (let i = 0; i <= 10; i++) {
       const element = this.data[0];
       const tspan = document.createElementNS(this.#svgns, "tspan");
@@ -480,7 +480,7 @@ class LineChart {
     }
     this.#svg.appendChild(textVerical);
 
-    // punere ani
+    // punere ani pe axa ox
     const textOrizontal = document.createElementNS(this.#svgns, "text");
     textOrizontal.appendChild(document.createTextNode("Ani"));
     textOrizontal.setAttribute("x", 900);
@@ -521,11 +521,58 @@ class LineChart {
       circle.style.fill = "black";
       this.#svg.appendChild(circle);
 
+      // creare tooltip pozitionat deasupra cercului
+      const tooltip = document.createElementNS(this.#svgns, "rect");
+      this.#svg.appendChild(tooltip);
+      tooltip.setAttribute("x", 70 + 50 * i);
+      tooltip.setAttribute("y", cyValue - 65);
+
+      // creare texte de pus in tooltip
+      const valueText = document.createElementNS(this.#svgns, "text");
+      const yearText = document.createElementNS(this.#svgns, "text");
+
+      valueText.setAttribute("x", 75 + 50 * i);
+      valueText.setAttribute("y", cyValue - 45);
+      valueText.style.fontSize = "15px";
+      valueText.style.fontWeight = "bold";
+      valueText.style.fill = "white";
+      this.#svg.appendChild(valueText);
+
+      yearText.setAttribute("x", 75 + 50 * i);
+      yearText.setAttribute("y", cyValue - 30);
+      yearText.style.fontSize = "15px";
+      yearText.style.fontWeight = "bold";
+      yearText.style.fill = "white";
+      this.#svg.appendChild(yearText);
+
       circle.addEventListener(
         "mouseover",
         function (event) {
+          // efect de marire pe hover
           event.target.style.fill = "grey";
           event.target.setAttribute("r", 7);
+
+          valueText.appendChild(
+            document.createTextNode(`Value: ${element[2]}`)
+          );
+
+          // setare lungime tooltip in functie de cel mai mare text dintre cele doua si a inaltimii cat cele doua impreuna + margini
+          yearText.appendChild(document.createTextNode(`Year: ${element[1]}`));
+          tooltip.setAttribute(
+            "height",
+            valueText.getBoundingClientRect().height +
+              yearText.getBoundingClientRect().height +
+              10
+          );
+          tooltip.setAttribute(
+            "width",
+            Math.max(
+              valueText.getBoundingClientRect().width,
+              yearText.getBoundingClientRect().width
+            ) + 10
+          );
+          tooltip.style.opacity = "0.3";
+          tooltip.style.fill = "black";
         },
         false
       );
@@ -533,8 +580,19 @@ class LineChart {
       circle.addEventListener(
         "mouseout",
         function (event) {
+          // revenire la normal dupa hover
           event.target.style.fill = "black";
           event.target.setAttribute("r", 5);
+
+          // eliminare tooltip
+          tooltip.setAttribute("height", 0);
+          tooltip.setAttribute("width", 0);
+          tooltip.style.opacity = "0";
+          tooltip.style.fill = "WhiteSmoke";
+
+          // eliminare text din tooltip
+          valueText.removeChild(valueText.lastChild);
+          yearText.removeChild(yearText.lastChild);
         },
         false
       );
@@ -542,11 +600,13 @@ class LineChart {
   }
 
   #drawLines() {
+    // desenare polyline
     const polyline = document.createElementNS(this.#svgns, "polyline");
     polyline.style.stroke = "grey";
     polyline.style.strokeWidth = "3";
     polyline.style.fill = "none";
     let points = "";
+    // parcurgerea elementelor pentru setarea valorilor points pentru polyline
     for (let i = 0; i <= this.data.length - 1; i++) {
       const element = this.data[i];
 
