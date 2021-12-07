@@ -446,7 +446,9 @@ class LineChart {
     this.#svg.appendChild(rect);
 
     const text = document.createElementNS(this.#svgns, "text");
-    text.appendChild(document.createTextNode(`${this.data[0][0]} in Romania`));
+    text.appendChild(
+      document.createTextNode(`${this.data[0][0]} in ${this.data[0][3]}`)
+    );
     text.setAttribute("x", 400);
     text.setAttribute("y", 30);
     text.style.fontWeight = "bold";
