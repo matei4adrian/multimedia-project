@@ -447,7 +447,7 @@ class LineChart {
 
     const text = document.createElementNS(this.#svgns, "text");
     text.appendChild(
-      document.createTextNode(`${this.data[0][0]} in ${this.data[0][3]}`)
+      document.createTextNode(`${this.data[0][0]} în ${this.data[0][3]}`)
     );
     text.setAttribute("x", 400);
     text.setAttribute("y", 30);
@@ -456,10 +456,10 @@ class LineChart {
   }
 
   #drawValues() {
-    const textVerical = document.createElementNS(this.#svgns, "text");
-    textVerical.appendChild(document.createTextNode(`${this.data[0][0]}`));
-    textVerical.setAttribute("x", 30);
-    textVerical.setAttribute("y", 60);
+    const textVertical = document.createElementNS(this.#svgns, "text");
+    textVertical.appendChild(document.createTextNode(`${this.data[0][0]}`));
+    textVertical.setAttribute("x", 30);
+    textVertical.setAttribute("y", 60);
 
     // punere valori pe axa oy
     for (let i = 0; i <= 10; i++) {
@@ -476,9 +476,9 @@ class LineChart {
 
       tspan.setAttribute("x", 20);
       tspan.setAttribute("y", 346 - 25 * i);
-      textVerical.appendChild(tspan);
+      textVertical.appendChild(tspan);
     }
-    this.#svg.appendChild(textVerical);
+    this.#svg.appendChild(textVertical);
 
     // punere ani pe axa ox
     const textOrizontal = document.createElementNS(this.#svgns, "text");
@@ -524,21 +524,22 @@ class LineChart {
       // creare tooltip pozitionat deasupra cercului
       const tooltip = document.createElementNS(this.#svgns, "rect");
       this.#svg.appendChild(tooltip);
-      tooltip.setAttribute("x", 70 + 50 * i);
+      tooltip.setAttribute("x", 60 + 50 * i);
       tooltip.setAttribute("y", cyValue - 65);
+      tooltip.setAttribute("rx", 4);
 
       // creare texte de pus in tooltip
       const valueText = document.createElementNS(this.#svgns, "text");
       const yearText = document.createElementNS(this.#svgns, "text");
 
-      valueText.setAttribute("x", 75 + 50 * i);
+      valueText.setAttribute("x", 65 + 50 * i);
       valueText.setAttribute("y", cyValue - 45);
       valueText.style.fontSize = "15px";
       valueText.style.fontWeight = "bold";
       valueText.style.fill = "white";
       this.#svg.appendChild(valueText);
 
-      yearText.setAttribute("x", 75 + 50 * i);
+      yearText.setAttribute("x", 65 + 50 * i);
       yearText.setAttribute("y", cyValue - 30);
       yearText.style.fontSize = "15px";
       yearText.style.fontWeight = "bold";
@@ -553,11 +554,11 @@ class LineChart {
           event.target.setAttribute("r", 7);
 
           valueText.appendChild(
-            document.createTextNode(`Value: ${element[2]}`)
+            document.createTextNode(`Valoare: ${element[2]}`)
           );
 
           // setare lungime tooltip in functie de cel mai mare text dintre cele doua si a inaltimii cat cele doua impreuna + margini
-          yearText.appendChild(document.createTextNode(`Year: ${element[1]}`));
+          yearText.appendChild(document.createTextNode(`An: ${element[1]}`));
           tooltip.setAttribute(
             "height",
             valueText.getBoundingClientRect().height +
