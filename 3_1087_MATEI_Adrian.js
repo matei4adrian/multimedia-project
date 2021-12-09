@@ -340,6 +340,12 @@ function createTable(filterArrayByYear) {
       .map((el) => el.valoare)
       .reduce((acc, val) => acc + val, 0) / countries.length
   );
+  let div = document.createElement("div");
+  div.style.fontSize = "20px";
+  div.style.fontWeight = "bold";
+  div.style.padding = "10px";
+  div.innerHTML = `Media SV: ${medSV}  -  Media POP: ${medPOP}  -  Media PIB: ${medPIB}`;
+  tableContainer.appendChild(div);
 
   let thead = document.createElement("thead");
   let tbody = document.createElement("tbody");
