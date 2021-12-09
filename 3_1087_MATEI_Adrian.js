@@ -385,42 +385,41 @@ function createTable(filterArrayByYear) {
       td.style.border = "1px solid black";
       td.style.textAlign = "left";
       td.style.padding = "8px";
-      td.style.color = "white";
       if (obj.indicator === "SV") {
         if (obj.valoare > medSV) {
-          td.style.backgroundColor = `rgb(0, ${Math.min(
-            255,
-            (obj.valoare - medSV) * 100
-          )}, 0)`;
+          td.style.backgroundColor = `rgb(0, 128, 0, ${Math.min(
+            1,
+            (obj.valoare - medSV) / 3
+          )})`;
         } else {
-          td.style.backgroundColor = `rgb(${Math.min(
-            255,
-            (medSV - obj.valoare) * 100
-          )}, 0, 0)`;
+          td.style.backgroundColor = `rgb(200, 0, 0, ${Math.min(
+            1,
+            (medSV - obj.valoare) / 3
+          )})`;
         }
       } else if (obj.indicator === "POP") {
         if (obj.valoare > medPOP) {
-          td.style.backgroundColor = `rgb(0, ${Math.min(
-            255,
-            obj.valoare - medPOP
-          )}, 0)`;
+          td.style.backgroundColor = `rgb(0, 128, 0, ${Math.min(
+            1,
+            (obj.valoare - medPOP) / (20 * 1000000)
+          )})`;
         } else {
-          td.style.backgroundColor = `rgb(${Math.min(
-            255,
-            medPOP - obj.valoare
-          )}, 0, 0)`;
+          td.style.backgroundColor = `rgb(200, 0, 0, ${Math.min(
+            1,
+            (medPOP - obj.valoare) / (20 * 1000000)
+          )})`;
         }
       } else if (obj.indicator === "PIB") {
         if (obj.valoare > medPIB) {
-          td.style.backgroundColor = `rgb(0, ${Math.min(
-            255,
-            obj.valoare - medPIB
-          )}, 0)`;
+          td.style.backgroundColor = `rgb(0, 128, 0, ${Math.min(
+            1,
+            (obj.valoare - medPIB) / (15 * 1000)
+          )})`;
         } else {
-          td.style.backgroundColor = `rgb(${Math.min(
-            255,
-            Math.round(medPIB - obj.valoare)
-          )}, 0, 0)`;
+          td.style.backgroundColor = `rgb(200, 0, 0, ${Math.min(
+            1,
+            (medPIB - obj.valoare) / (15 * 1000)
+          )})`;
         }
       }
       tr.appendChild(td);
