@@ -27,3 +27,38 @@
 .bar:hover {
   fill: gray;
 }
+
+.raport {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+}
+
+.select-raport-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 975px;
+}
+
+#select-an {
+  width: 30%;
+  margin-left: 10px;
+}
+
+.selects {
+  display: grid;
+  justify-content: center;
+  padding: 10px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+#table-container {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}

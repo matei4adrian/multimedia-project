@@ -228,6 +228,7 @@ function getArrayJsonsPIBPerLoc(arrayEurostat, countries, years, obj) {
 const lineChartContainer = document.getElementById("lineChart");
 const selectIndicator = document.getElementById("select-indicator");
 const selectTara = document.getElementById("select-tara");
+const selectAn = document.getElementById("select-an");
 selectIndicator.addEventListener(
   "change",
   function () {
@@ -296,6 +297,149 @@ selectTara.addEventListener(
       lineChartContainer.style.visibility = "visible";
     } else {
       lineChartContainer.style.visibility = "hidden";
+    }
+  },
+  false
+);
+
+let tableContainer = document.getElementById("table-container");
+function createTable(filterArrayByYear) {
+  let table = document.createElement("table");
+  let countries = [];
+  filterArrayByYear.map((el) => {
+    if (!countries.includes(el.tara)) {
+      countries.push(el.tara);
+    }
+  });
+
+  let indicators = [];
+  filterArrayByYear.map((el) => {
+    if (!indicators.includes(el.indicator)) {
+      indicators.push(el.indicator);
+    }
+  });
+
+  let medSV =
+    Math.round(
+      (filterArrayByYear
+        .filter((el) => el.indicator === "SV")
+        .map((el) => el.valoare)
+        .reduce((acc, val) => acc + val, 0) /
+        countries.length) *
+        10
+    ) / 10;
+  let medPOP = Math.round(
+    filterArrayByYear
+      .filter((el) => el.indicator === "POP")
+      .map((el) => el.valoare)
+      .reduce((acc, val) => acc + val, 0) / countries.length
+  );
+  let medPIB = Math.round(
+    filterArrayByYear
+      .filter((el) => el.indicator === "PIB")
+      .map((el) => el.valoare)
+      .reduce((acc, val) => acc + val, 0) / countries.length
+  );
+
+  let thead = document.createElement("thead");
+  let tbody = document.createElement("tbody");
+
+  // creare table head
+  let trHead = document.createElement("tr");
+  let thCountry = document.createElement("th");
+  thCountry.innerHTML = "Țara";
+  trHead.appendChild(thCountry);
+  trHead.style.border = "1px solid black";
+  trHead.style.padding = "8px";
+  for (let indicator of indicators) {
+    let th = document.createElement("th");
+    th.innerHTML = indicator;
+    th.style.border = "1px solid black";
+    th.style.padding = "8px";
+    trHead.appendChild(th);
+  }
+  thead.appendChild(trHead);
+
+  // creare table body
+  for (let country of countries) {
+    let tr = document.createElement("tr");
+    let tdCoutry = document.createElement("td");
+    tdCoutry.innerHTML = country;
+    tdCoutry.style.border = "1px solid black";
+    tdCoutry.style.textAlign = "left";
+    tdCoutry.style.padding = "8px";
+    tr.appendChild(tdCoutry);
+
+    let countryIndicatorsObjArray = filterArrayByYear.filter(
+      (el) => el.tara === country
+    );
+    for (let obj of countryIndicatorsObjArray) {
+      let td = document.createElement("td");
+      td.innerHTML = obj.valoare;
+      td.style.border = "1px solid black";
+      td.style.textAlign = "left";
+      td.style.padding = "8px";
+      td.style.color = "white";
+      if (obj.indicator === "SV") {
+        if (obj.valoare > medSV) {
+          td.style.backgroundColor = `rgb(0, ${Math.min(
+            255,
+            (obj.valoare - medSV) * 100
+          )}, 0)`;
+        } else {
+          td.style.backgroundColor = `rgb(${Math.min(
+            255,
+            (medSV - obj.valoare) * 100
+          )}, 0, 0)`;
+        }
+      } else if (obj.indicator === "POP") {
+        if (obj.valoare > medPOP) {
+          td.style.backgroundColor = `rgb(0, ${Math.min(
+            255,
+            obj.valoare - medPOP
+          )}, 0)`;
+        } else {
+          td.style.backgroundColor = `rgb(${Math.min(
+            255,
+            medPOP - obj.valoare
+          )}, 0, 0)`;
+        }
+      } else if (obj.indicator === "PIB") {
+        if (obj.valoare > medPIB) {
+          td.style.backgroundColor = `rgb(0, ${Math.min(
+            255,
+            obj.valoare - medPIB
+          )}, 0)`;
+        } else {
+          td.style.backgroundColor = `rgb(${Math.min(
+            255,
+            Math.round(medPIB - obj.valoare)
+          )}, 0, 0)`;
+        }
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  tableContainer.appendChild(table);
+}
+
+selectAn.addEventListener(
+  "change",
+  function () {
+    if (tableContainer.hasChildNodes) {
+      tableContainer.innerHTML = "";
+    }
+    if (this.value !== "default") {
+      // filtreaza dupa anul selectat
+      let filterArrayByYear = arrayEurostat.filter(
+        (el) => el.an === this.value
+      );
+      // craza tabelul
+      createTable(filterArrayByYear);
     }
   },
   false
@@ -376,6 +520,20 @@ window.onload = async () => {
       opt.value = el.indicator;
       opt.innerHTML = el.indicator;
       selectIndicator.appendChild(opt);
+    }
+  }
+
+  for (let year of years) {
+    let options = selectAn.querySelectorAll("option");
+    let exista = false;
+    for (let opt of options) {
+      if (opt.innerHTML === year) exista = true;
+    }
+    if (!exista) {
+      var opt = document.createElement("option");
+      opt.value = year;
+      opt.innerHTML = year;
+      selectAn.appendChild(opt);
     }
   }
 };
