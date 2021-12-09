@@ -4,7 +4,7 @@ let arrayEurostat = [];
 
 // obtinem json pentru speranta de viata
 const getSV = fetch(
-  "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/demo_mlexpec?precision=1&sex=T&age=Y1"
+  "https://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/demo_mlexpec?precision=1&sex=T&age=Y1"
 )
   .then((resp) => resp.json())
   .then(function (data) {
@@ -16,7 +16,7 @@ const getSV = fetch(
 
 // obtinem json pentru populatie
 const getPop = fetch(
-  "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/demo_pjan?precision=1&sex=T&age=TOTAL"
+  "https://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/demo_pjan?precision=1&sex=T&age=TOTAL"
 )
   .then((resp) => resp.json())
   .then(function (data) {
@@ -28,7 +28,7 @@ const getPop = fetch(
 
 // obtinem json pentru PIB
 const getPIBPerLoc = fetch(
-  "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/sdg_08_10?na_item=B1GQ&precision=1&unit=CLV10_EUR_HAB"
+  "https://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en/sdg_08_10?na_item=B1GQ&precision=1&unit=CLV10_EUR_HAB"
 )
   .then((resp) => resp.json())
   .then(function (data) {
